@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1029658358868",
+    "project_id": "must-e-dos",
+    "storage_bucket": "must-e-dos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029658358868:android:ae2e8d0cd68db260d229c1",
+        "android_client_info": {
+          "package_name": "com.example.office_of_the_dean"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1029658358868-0242efc999onctok4ot82pstn3fjoghb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.office_of_the_dean",
+            "certificate_hash": "15d1ed06c40fc3af6bf751d365c3f1b6462f464c"
+          }
+        },
+        {
+          "client_id": "1029658358868-ses7qj6b37tkj3d2ll7ccuu48b70so6d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6EPuaQRbjrfmo4OwqxD-zukHSTc4y3FI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029658358868-ses7qj6b37tkj3d2ll7ccuu48b70so6d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

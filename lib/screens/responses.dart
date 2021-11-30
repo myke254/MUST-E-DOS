@@ -54,7 +54,7 @@ class _ReceivedRequestsState extends State<ReceivedRequests> {
               .collection('requests')
               .doc(widget.docId)
               .collection('requests')
-              .where('approved', isEqualTo: false)
+              .where('seen', isEqualTo: false)
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             return snapshot.hasData
@@ -88,6 +88,8 @@ class _ReceivedRequestsState extends State<ReceivedRequests> {
                           onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (context) => Request(
+                                      category: widget.docId,
+                                      documentId: docSnap.id,
                                       name: docSnap['sentBy'],
                                       time: timeago
                                           .format(docSnap['time'].toDate()),

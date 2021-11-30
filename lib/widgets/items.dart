@@ -212,7 +212,8 @@ class _TilesState extends State<Tiles> with TickerProviderStateMixin {
                       child: Center(
                           child: Text(
                         widget.docLength.toString(),
-                        style: GoogleFonts.monda(color: Colors.white),
+                        style: GoogleFonts.monda(
+                            color: Colors.white, fontSize: 10),
                       )),
                     )
                   : Container(),

@@ -31,7 +31,7 @@ class _DeanState extends State<Dean> with AutomaticKeepAliveClientMixin<Dean> {
                             .collection('requests')
                             .doc(item.id)
                             .collection('requests')
-                            .where('approved', isEqualTo: false)
+                            .where('seen', isEqualTo: false)
                             .snapshots(),
                         builder: (context, AsyncSnapshot<QuerySnapshot> snap2) {
                           return snap2.hasData

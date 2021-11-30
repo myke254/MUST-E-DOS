@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:office_of_the_dean/screens/signin.dart';
@@ -42,39 +43,42 @@ class _SettingsPageState extends State<SettingsPage> {
                       return showDialog(
                           context: context,
                           builder: (context) {
-                            return AlertDialog(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(40)),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  RadioListTile(
-                                    title: const Text('light theme'),
-                                    value: ThemeMode.light,
-                                    groupValue: themeNotifier.getThemeMode(),
-                                    onChanged: (value) {
-                                      print(value);
-                                      getTheme();
-                                      Navigator.of(context).pop();
-                                    },
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30)),
-                                  ),
-                                  RadioListTile(
-                                    title: const Text('Dark theme'),
-                                    value: ThemeMode.dark,
-                                    groupValue: themeNotifier.getThemeMode(),
-                                    onChanged: (value) {
-                                      print(value);
-                                      getTheme();
-                                      Navigator.of(context).pop();
-                                    },
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30)),
-                                  ),
-                                ],
+                            return CupertinoAlertDialog(
+                              // shape: RoundedRectangleBorder(
+                              //     borderRadius: BorderRadius.circular(40)),
+                              content: Material(
+                                color: Colors.transparent,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    RadioListTile(
+                                      title: const Text('light theme'),
+                                      value: ThemeMode.light,
+                                      groupValue: themeNotifier.getThemeMode(),
+                                      onChanged: (value) {
+                                        print(value);
+                                        getTheme();
+                                        Navigator.of(context).pop();
+                                      },
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30)),
+                                    ),
+                                    RadioListTile(
+                                      title: const Text('Dark theme'),
+                                      value: ThemeMode.dark,
+                                      groupValue: themeNotifier.getThemeMode(),
+                                      onChanged: (value) {
+                                        print(value);
+                                        getTheme();
+                                        Navigator.of(context).pop();
+                                      },
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30)),
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           });
@@ -87,9 +91,9 @@ class _SettingsPageState extends State<SettingsPage> {
                     showDialog(
                         context: context,
                         builder: (context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40)),
+                          return CupertinoAlertDialog(
+                            // shape: RoundedRectangleBorder(
+                            //     borderRadius: BorderRadius.circular(40)),
                             title: Text(
                               'You are signed in as ${_user!.email}',
                               style: GoogleFonts.aBeeZee(fontSize: 14),
@@ -100,31 +104,27 @@ class _SettingsPageState extends State<SettingsPage> {
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),
                             actions: [
-                              ButtonBar(
-                                children: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text(
-                                        'stay',
-                                        style: GoogleFonts.aBeeZee(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15),
-                                      )),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                      AuthService().signOut();
-                                    },
-                                    child: Text(
-                                      'SignOut',
-                                      style: GoogleFonts.aBeeZee(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
-                                    ),
-                                  )
-                                ],
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    'stay',
+                                    style: GoogleFonts.aBeeZee(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                  )),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  AuthService().signOut();
+                                },
+                                child: Text(
+                                  'SignOut',
+                                  style: GoogleFonts.aBeeZee(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15),
+                                ),
                               )
                             ],
                           );

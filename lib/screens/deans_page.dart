@@ -64,3 +64,12 @@ class _DeanState extends State<Dean> with AutomaticKeepAliveClientMixin<Dean> {
   @override
   bool get wantKeepAlive => true;
 }
+
+class Test extends StatelessWidget {
+  const Test({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}

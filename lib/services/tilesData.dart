@@ -30,6 +30,18 @@ class BottomSheetData {
       'image': 'assets/contact.png',
       'color': Colors.green
     },
+  ];
+}
+
+class DrawerData {
+  var drawerTiles = [
+    {
+      'title': 'my requests',
+      'hasSub': true,
+      'sub': 'check the status of requests you\'ve submitted before',
+      'image': 'assets/req.png',
+      'color': Colors.greenAccent
+    },
     {
       'title': 'Help',
       'hasSub': false,

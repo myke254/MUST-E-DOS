@@ -31,7 +31,7 @@ class AuthService {
         firestore.collection('users').doc(user!.uid).set({
           'email': user.email,
           'uid': user.uid,
-        });
+        }, SetOptions(merge: true));
       });
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(
@@ -51,7 +51,8 @@ class AuthService {
         firestore.collection('users').doc(user!.uid).set({
           'email': user.email,
           'uid': user.uid,
-        });
+          'authorized': null,
+        }, SetOptions(merge: true));
       });
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(

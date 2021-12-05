@@ -84,6 +84,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           });
                     }),
                 SettingsTile(
+                  subtitleTextStyle: GoogleFonts.varela(fontSize: 10),
                   title: 'LogOut',
                   subtitle: 'signed in as ${_user!.email}',
                   leading: Icon(Icons.logout),

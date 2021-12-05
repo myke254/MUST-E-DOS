@@ -3,8 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   get darkTheme => ThemeData(
-      primarySwatch: Colors.green,
+      primarySwatch: Colors.red,
       brightness: Brightness.dark,
+      fontFamily: GoogleFonts.varela().fontFamily,
       appBarTheme: AppBarTheme(titleTextStyle: GoogleFonts.varelaRound()));
 
   get lightTheme => ThemeData(

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:office_of_the_dean/screens/help.dart';
+import 'package:office_of_the_dean/screens/quick_actions.dart';
+import 'package:office_of_the_dean/screens/register.dart';
 import 'package:office_of_the_dean/screens/responses.dart';
 import 'package:office_of_the_dean/services/auth_service.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -74,18 +77,21 @@ class Cards extends StatefulWidget {
 
 class _CardsState extends State<Cards> with TickerProviderStateMixin {
   late AnimationController animationController;
+
+  @override
+  void initState() {
+    if (mounted) {
+      animationController =
+          AnimationController(duration: new Duration(seconds: 2), vsync: this);
+      animationController.repeat();
+    }
+    super.initState();
+  }
+
   @override
   void dispose() {
     super.dispose();
     animationController.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    animationController =
-        AnimationController(duration: new Duration(seconds: 2), vsync: this);
-    animationController.repeat();
   }
 
   @override
@@ -143,18 +149,21 @@ class Tiles extends StatefulWidget {
 
 class _TilesState extends State<Tiles> with TickerProviderStateMixin {
   late AnimationController animationController;
+
+  @override
+  void initState() {
+    if (mounted) {
+      animationController =
+          AnimationController(duration: new Duration(seconds: 2), vsync: this);
+      animationController.repeat();
+    }
+    super.initState();
+  }
+
   @override
   void dispose() {
     super.dispose();
     animationController.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    animationController =
-        AnimationController(duration: new Duration(seconds: 2), vsync: this);
-    animationController.repeat();
   }
 
   @override
@@ -249,7 +258,7 @@ class _BottomBarTilesState extends State<BottomBarTiles> {
     return ListTile(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       onTap: () {
-        print(widget.index);
+        print(widget.title);
       },
       leading: Card(
         color: Theme.of(context).brightness == Brightness.dark
@@ -279,5 +288,78 @@ class _BottomBarTilesState extends State<BottomBarTiles> {
       ),
       subtitle: widget.hasSubtitle ? Text(widget.subtitle) : SizedBox(),
     );
+  }
+}
+
+class DrawerTiles extends StatefulWidget {
+  const DrawerTiles(
+      {Key? key,
+      this.image,
+      this.title,
+      this.hasSubtitle,
+      this.subtitle,
+      this.index,
+      this.color})
+      : super(key: key);
+  final image;
+  final title;
+  final hasSubtitle;
+  final subtitle;
+  final index;
+  final color;
+  @override
+  _DrawerTilesState createState() => _DrawerTilesState();
+}
+
+class _DrawerTilesState extends State<DrawerTiles> {
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        onTap: () {
+          print(widget.title);
+          if (widget.title.toString().contains('F.A.Q')) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => QuickActions(
+                    image: 'assets/faq.png',
+                    title: 'FAQs',
+                    stream: firestore.collection('FAQs').snapshots())));
+          }
+          if (widget.title.toString().contains('Help')) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => QuickActions(
+                    image: 'assets/help.png',
+                    title: 'Help and Support',
+                    stream: firestore.collection('questions').snapshots())));
+          }
+        },
+        leading: Card(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+          child: Padding(
+            padding: const EdgeInsets.all(3.0),
+            child: Container(
+              height: 35,
+              width: 35,
+              decoration: BoxDecoration(
+                  color: widget.color, borderRadius: BorderRadius.circular(20)),
+              child: Center(
+                child: Image.asset(
+                  widget.image,
+                  height: 25,
+                  width: 25,
+                ),
+              ),
+            ),
+          ),
+        ),
+        title: Text(
+          widget.title,
+          style: GoogleFonts.varela(),
+        ),
+        subtitle: Text(widget.hasSubtitle ? widget.subtitle : ''));
   }
 }

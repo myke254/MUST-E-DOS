@@ -67,7 +67,9 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).brightness == Brightness.light
+            ? Colors.grey.withOpacity(.2)
+            : Colors.black.withOpacity(.3),
         title: Text(
           'M.u.s.t E-D.O.S',
           style: GoogleFonts.medievalSharp(
@@ -77,6 +79,9 @@ class _SignInState extends State<SignIn> {
         ),
       ),
       body: Container(
+        color: Theme.of(context).brightness == Brightness.light
+            ? Colors.grey.withOpacity(.2)
+            : Colors.black.withOpacity(.3),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Stack(

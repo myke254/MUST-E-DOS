@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:office_of_the_dean/screens/home.dart';
 import 'package:office_of_the_dean/services/auth_service.dart';
 import 'package:office_of_the_dean/services/firebase_api.dart';
 import 'package:path/path.dart';
@@ -32,6 +33,24 @@ class _RequestPageState extends State<RequestPage> {
   File? file;
   FilePickerStatus? _status;
   TextEditingController _controller = TextEditingController();
+  bool authorized = false;
+  String regNo = '';
+  String name = '';
+  checkAuth() {
+    firestore.collection('users').doc(_user!.uid).get().then((value) {
+      setState(() {
+        if (value['authorized'] == true) {
+          authorized = true;
+        } else {
+          authorized = false;
+        }
+        value['regNo'] != null ? regNo = value['regNo'] : regNo = '';
+        value['firstName'] != null
+            ? name = '${value['firstName']} ${value['lastName']}'
+            : regNo = '';
+      });
+    });
+  }
 
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles(
@@ -73,8 +92,9 @@ class _RequestPageState extends State<RequestPage> {
           .doc()
           .set({
         'time': DateTime.now(),
-        'sentBy': _user!.email,
+        'sentBy': !authorized ? _user!.email : name,
         'uid': _user!.uid,
+        'regNo': !authorized ? '' : regNo,
         'documentUrl': urlDownload,
         'seen': false,
         'approved': false,
@@ -119,6 +139,7 @@ class _RequestPageState extends State<RequestPage> {
 
   @override
   void initState() {
+    checkAuth();
     instructions = [
       'create a document file with your phone or pc',
       'type a formal letter as you normally would addressed to the Dean of Students requesting for ${widget.docId == 'function' ? 'hosting a function in school' : widget.docId == 'appointments' ? 'an appointment with the dean' : widget.docId == 'vehicle requests' ? 'a vehicle' : widget.docId},\nnote: the letter must be formal',
@@ -166,7 +187,7 @@ class _RequestPageState extends State<RequestPage> {
                         child: Text('instructions: '),
                       ),
                       Container(
-                        height: 144,
+                        height: 160,
                         width: size.width,
                         child: ListView.separated(
                           itemCount: instructions.length,
@@ -254,7 +275,7 @@ class _RequestPageState extends State<RequestPage> {
                         child: TextField(
                           maxLength: 500,
                           controller: _controller,
-                          maxLines: 10,
+                          maxLines: 8,
                           decoration: InputDecoration.collapsed(
                               fillColor: Colors.teal.withOpacity(.1),
                               filled: true,

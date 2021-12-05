@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:office_of_the_dean/services/constants.dart';
 import 'package:office_of_the_dean/services/app_theme.dart';
 import 'package:office_of_the_dean/services/auth_service.dart';
@@ -9,6 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark));
   Future<SharedPreferences> prefs = SharedPreferences.getInstance();
   prefs.then((value) {
     runApp(

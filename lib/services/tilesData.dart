@@ -10,7 +10,7 @@ class BottomSheetData {
       'color': Colors.greenAccent
     },
     {
-      'title': 'file a complaint against a student\n(NITAKUSEMA KWA DEAN😩😩)',
+      'title': 'file a complaint against a student',
       'hasSub': true,
       'sub': 'e.g. bully, rogue behavior, ... etc.',
       'image': 'assets/bully.png',
@@ -29,6 +29,20 @@ class BottomSheetData {
       'sub': '',
       'image': 'assets/contact.png',
       'color': Colors.green
+    },
+    {
+      'title': 'Help',
+      'hasSub': false,
+      'sub': '',
+      'image': 'assets/help.png',
+      'color': Colors.white
+    },
+    {
+      'title': 'F.A.Q',
+      'hasSub': true,
+      'sub': 'frequently asked questions',
+      'image': 'assets/faq.png',
+      'color': Colors.white
     }
   ];
 }

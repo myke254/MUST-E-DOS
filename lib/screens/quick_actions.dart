@@ -20,7 +20,7 @@ class _QuickActionsState extends State<QuickActions> {
   late bool isAdmin;
   late bool isUser;
   String userName = '';
-  // double _inputHeight = 50;
+  double _inputHeight = 50;
   User? user = FirebaseAuth.instance.currentUser;
   TextEditingController _controller = TextEditingController();
   ScrollController _scrollController = ScrollController();
@@ -35,25 +35,25 @@ class _QuickActionsState extends State<QuickActions> {
     });
   }
 
-  // void _checkInputHeight() async {
-  //   int count = _controller.text.split('\n').length;
+  void _checkInputHeight() async {
+    int count = _controller.text.split('\n').length;
 
-  //   if (count == 0 && _inputHeight == 50.0) {
-  //     return;
-  //   }
-  //   if (count <= 5) {
-  //     // use a maximum height of 6 rows
-  //     // height values can be adapted based on the font size
-  //     var newHeight = count == 0 ? 50.0 : 28.0 + (count * 18.0);
-  //     setState(() {
-  //       _inputHeight = newHeight;
-  //     });
-  //   }
-  // }
+    if (count == 0 && _inputHeight == 50.0) {
+      return;
+    }
+    if (count <= 5) {
+      // use a maximum height of 6 rows
+      // height values can be adapted based on the font size
+      var newHeight = count == 0 ? 50.0 : 28.0 + (count * 18.0);
+      setState(() {
+        _inputHeight = newHeight;
+      });
+    }
+  }
 
   @override
   void initState() {
-    //   _controller.addListener(_checkInputHeight);
+    _controller.addListener(_checkInputHeight);
     getUserName();
     isDean = user!.email == 'dean@email.com' ? true : false;
     isAdmin = user!.email == 'admin@email.com' ? true : false;
@@ -123,120 +123,131 @@ class _QuickActionsState extends State<QuickActions> {
                                 child: Scrollbar(
                                   controller: _scrollController,
                                   isAlwaysShown: true,
-                                  child: TextField(
-                                    scrollController: _scrollController,
-                                    keyboardType: TextInputType.multiline,
-                                    maxLines: null,
-                                    controller: _controller,
-                                    textInputAction: TextInputAction.newline,
-                                    onChanged: (s) => {print(s.length)},
-                                    decoration: InputDecoration(
+                                  child: Container(
+                                    height: _inputHeight,
+                                    child: TextField(
+                                      scrollController: _scrollController,
+                                      keyboardType: TextInputType.multiline,
+                                      maxLines: null,
+                                      controller: _controller,
+                                      textInputAction: TextInputAction.newline,
+                                      decoration: InputDecoration(
                                         isDense: true,
                                         prefixIcon: Icon(
                                           Icons.message,
                                           size: 15,
                                         ),
                                         labelText: 'type here',
-                                        labelStyle: TextStyle(fontSize: 12),
-                                        border: OutlineInputBorder()),
+                                        labelStyle: TextStyle(fontSize: 18),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: IconButton(
-                                    splashRadius: 24,
-                                    onPressed: () {
-                                      _controller.text.isEmpty
-                                          ? print('empty')
-                                          : print(_controller.text);
-                                    },
-                                    icon: Icon(Icons.send)),
-                              )
+                              IconButton(
+                                  splashRadius: 24,
+                                  onPressed: () {
+                                    _controller.text.isEmpty
+                                        ? print('empty')
+                                        : print(_controller.text);
+                                  },
+                                  icon: Icon(Icons.send))
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                              'describe your problem here ☝ and we shall get back at you ASAP',
-                              style: TextStyle(fontSize: 10),
-                            ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'describe your problem here ☝ and we shall get back at you ASAP',
+                            style: TextStyle(fontSize: 10),
                           ),
                         ],
                       ),
                     )
                   ],
                 )
-              : StreamBuilder<QuerySnapshot>(
-                  stream: widget.stream,
-                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    return snapshot.hasData
-                        ? SingleChildScrollView(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: snapshot.data!.docs
-                                    .map((e) => Container(
-                                          child: Column(
-                                            children: [
-                                              RichText(
-                                                text: TextSpan(
-                                                  style: GoogleFonts.brawler(),
-                                                  children: [
-                                                    TextSpan(
-                                                        text: 'Q: ',
-                                                        style: TextStyle(
+              : widget.title.toString().contains('FAQs')
+                  ? StreamBuilder<QuerySnapshot>(
+                      stream: widget.stream,
+                      builder:
+                          (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        return snapshot.hasData
+                            ? SingleChildScrollView(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: snapshot.data!.docs.map((e) {
+                                      return Container(
+                                        child: Column(
+                                          children: [
+                                            RichText(
+                                              text: TextSpan(
+                                                style: GoogleFonts.brawler(),
+                                                children: [
+                                                  TextSpan(
+                                                      text: 'Q: ',
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 23,
+                                                        color: Theme.of(context)
+                                                                    .brightness ==
+                                                                Brightness.dark
+                                                            ? Colors.white
+                                                            : Colors.black,
+                                                      )),
+                                                  TextSpan(
+                                                      text:
+                                                          '${e['question']}\n',
+                                                      style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          fontSize: 23,
-                                                          color: Theme.of(context)
-                                                                      .brightness ==
-                                                                  Brightness
-                                                                      .dark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                        )),
-                                                    TextSpan(
-                                                        text:
-                                                            '${e['question']}\n',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: Colors.red,
-                                                            fontSize: 18)),
-                                                    TextSpan(
-                                                        text: 'A:  ',
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 23,
-                                                          color: Theme.of(context)
-                                                                      .brightness ==
-                                                                  Brightness
-                                                                      .dark
-                                                              ? Colors.white
-                                                              : Colors.blueGrey,
-                                                        )),
-                                                    TextSpan(
-                                                        text:
-                                                            ' ${e['answer']}\n',
-                                                        style: TextStyle(
-                                                            fontStyle: FontStyle
-                                                                .italic,
-                                                            color:
-                                                                Colors.green)),
-                                                  ],
-                                                ),
+                                                          color: Colors.red,
+                                                          fontSize: 18)),
+                                                  TextSpan(
+                                                      text: 'A:  ',
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 23,
+                                                        color: Theme.of(context)
+                                                                    .brightness ==
+                                                                Brightness.dark
+                                                            ? Colors.white
+                                                            : Colors.blueGrey,
+                                                      )),
+                                                  TextSpan(
+                                                      text: ' ${e['answer']}\n',
+                                                      style: TextStyle(
+                                                          fontStyle:
+                                                              FontStyle.italic,
+                                                          color: Colors.green)),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                        ))
-                                    .toList(),
-                              ),
-                            ),
-                          )
-                        : Container();
-                  })
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              )
+                            : Container();
+                      })
+                  : StreamBuilder<QuerySnapshot>(
+                      stream: widget.stream,
+                      builder: (context, snapshot) {
+                        // return ListView.builder(
+                        //     itemCount: snapshot.data!.docs.length,
+                        //     itemBuilder: (c, i) {
+                        //       DocumentSnapshot doc = snapshot.data!.docs[i];
+                        //       return Text(doc.id);
+                        //     });
+                        return Container(
+                          child:
+                              Center(child: Text('requests will appear here')),
+                        );
+                      })
           : Container(),
     );
   }

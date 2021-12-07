@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -253,6 +254,7 @@ class BottomBarTiles extends StatefulWidget {
 }
 
 class _BottomBarTilesState extends State<BottomBarTiles> {
+  User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -312,6 +314,7 @@ class DrawerTiles extends StatefulWidget {
 }
 
 class _DrawerTilesState extends State<DrawerTiles> {
+  User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -331,6 +334,16 @@ class _DrawerTilesState extends State<DrawerTiles> {
                     image: 'assets/help.png',
                     title: 'Help and Support',
                     stream: firestore.collection('questions').snapshots())));
+          }
+          if (widget.title.toString().contains('requests')) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => QuickActions(
+                    image: 'assets/req.png',
+                    title: 'My requests',
+                    stream: firestore
+                        .collectionGroup('requests')
+                        .where('uid', isEqualTo: user!.uid)
+                        .snapshots())));
           }
         },
         leading: Card(

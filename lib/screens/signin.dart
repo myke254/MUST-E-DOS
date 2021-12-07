@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:office_of_the_dean/services/auth_service.dart';
 import 'package:office_of_the_dean/services/theme_notifier.dart';
 import 'package:provider/provider.dart';
@@ -39,12 +40,14 @@ class SignIn extends StatefulWidget {
   _SignInState createState() => _SignInState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignInState extends State<SignIn> with TickerProviderStateMixin {
+  late final AnimationController _controller;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
   TextEditingController confirmPassController = TextEditingController();
   bool signIn = true;
+  late LottieComposition _composition;
   logIn() {
     if (_formKey.currentState!.validate()) {
       signIn
@@ -60,16 +63,30 @@ class _SignInState extends State<SignIn> {
   bool passObscureText = true;
   bool confirmPassObscureText = true;
   @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     themeNotifier = Provider.of<ThemeNotifier>(context);
     return Scaffold(
+      extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
         backgroundColor: Theme.of(context).brightness == Brightness.light
-            ? Colors.grey.withOpacity(.2)
-            : Colors.black.withOpacity(.3),
+            ? Colors.white.withOpacity(0)
+            : Colors.black.withOpacity(0),
         title: Text(
           'M.u.s.t E-D.O.S',
           style: GoogleFonts.medievalSharp(
@@ -87,23 +104,62 @@ class _SignInState extends State<SignIn> {
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(top: 100, right: 10),
+              child: Align(
+                alignment: Alignment.topRight,
+                // child: Lottie.asset(
+                //   'assets/52869-day-and-night-switch-button.json',
+                //   controller: _controller,
+                //   height: 50,
+                //   width: 50,
+                //   onLoaded: (composition) {
+                //     setState(() {
+                //       _composition = composition;
+                //     });
+                //     // Configure the AnimationController with the duration of the
+                //     // Lottie file and start the animation.
+
+                //     _controller
+                //       ..duration = composition.duration
+                //       ..forward();
+                //   },
+                // ),
+              ),
+            ),
+            // Image.asset(
+            //   'assets/gif.gif',
+            //   height: MediaQuery.of(context).size.height,
+            //   width: MediaQuery.of(context).size.width,
+            //   fit: BoxFit.fitHeight,
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(top: 100, right: 10),
               child: Align(
                   alignment: Alignment.topRight,
-                  child:
-                      InkWell(onTap: () => getTheme(), child: Icon(iconData))),
+                  child: InkWell(
+                      onTap: () {
+                        // print(_composition.durationFrames);
+                        // _controller
+                        //   ..duration = _composition.duration
+                        //   ..forward(from: 1);
+                        getTheme();
+                      },
+                      child: Icon(iconData))),
             ),
             Align(
               alignment: Alignment.topCenter,
-              child: Image.asset(
-                'assets/must1.png',
-                height: 125,
-                width: 125,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 80.0),
+                child: Image.asset(
+                  'assets/must1.png',
+                  height: 100,
+                  width: 100,
+                ),
               ),
             ),
             Center(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(top: 90.0),
                 child: Form(
                     key: _formKey,
                     child: Column(
@@ -113,7 +169,7 @@ class _SignInState extends State<SignIn> {
                           padding: const EdgeInsets.all(12.0),
                           child: Text(
                             signIn ? 'SignIn' : 'SignUp',
-                            style: GoogleFonts.recursive(
+                            style: GoogleFonts.varela(
                                 fontSize: 25, fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -130,7 +186,7 @@ class _SignInState extends State<SignIn> {
                             controller: emailController,
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
-                                fillColor: Colors.teal.withOpacity(.1),
+                                // fillColor: Colors.teal.withOpacity(.1),
                                 filled: true,
                                 prefixIcon: Icon(
                                   Icons.mail,
@@ -139,7 +195,7 @@ class _SignInState extends State<SignIn> {
                                 labelText: 'Email',
                                 labelStyle: TextStyle(fontSize: 12),
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30))),
+                                    borderRadius: BorderRadius.circular(15))),
                           ),
                         ),
                         Padding(
@@ -166,7 +222,7 @@ class _SignInState extends State<SignIn> {
                                   }
                                 : (val) {},
                             decoration: InputDecoration(
-                                fillColor: Colors.teal.withOpacity(.1),
+                                //  fillColor: Colors.teal.withOpacity(.1),
                                 filled: true,
                                 prefixIcon: Icon(
                                   Icons.lock,
@@ -188,7 +244,7 @@ class _SignInState extends State<SignIn> {
                                 labelText: 'password',
                                 labelStyle: TextStyle(fontSize: 12),
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30))),
+                                    borderRadius: BorderRadius.circular(15))),
                           ),
                         ),
                         signIn
@@ -226,7 +282,7 @@ class _SignInState extends State<SignIn> {
                                     logIn();
                                   },
                                   decoration: InputDecoration(
-                                      fillColor: Colors.teal.withOpacity(.1),
+                                      //fillColor: Colors.teal.withOpacity(.1),
                                       filled: true,
                                       prefixIcon: Icon(
                                         Icons.lock,
@@ -249,13 +305,21 @@ class _SignInState extends State<SignIn> {
                                       labelStyle: TextStyle(fontSize: 12),
                                       border: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(30))),
+                                              BorderRadius.circular(15))),
                                 ),
                               )
                             : SizedBox(),
+                        Divider(
+                          indent: 50,
+                          endIndent: 50,
+                        ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Card(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.red
+                                    : Colors.blue,
                             elevation: 20,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20)),
@@ -263,8 +327,8 @@ class _SignInState extends State<SignIn> {
                               borderRadius: BorderRadius.circular(20),
                               onTap: logIn,
                               child: SizedBox(
-                                height: 60,
-                                width: 120,
+                                height: 50,
+                                width: 250,
                                 child: Center(
                                   child: Text(
                                     signIn ? 'SignIn' : 'SignUp',

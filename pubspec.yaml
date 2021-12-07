@@ -48,6 +48,7 @@ dependencies:
   file_picker: ^4.2.4
   open_file: ^3.2.1
   dropdown_search: ^2.0.1
+  lottie: ^1.2.1
 
 dev_dependencies:
   flutter_test:
